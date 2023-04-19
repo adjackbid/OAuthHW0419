@@ -25,6 +25,7 @@ namespace OAuthHW.Common
         public static async Task<LineNotifyAccessTokenResult> LineAccessTokenCheck(string access_token)
         {
             string sResult = "";
+            CommFuns.WriteLog("[LineNotify] Check Token Status Get：https://notify-api.line.me/api/status");
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", access_token);
@@ -43,6 +44,7 @@ namespace OAuthHW.Common
         public static async Task<LineNotifyResult> LineNotifySendMessage(string target_access_token,string message)
         {
             string sResult = "";
+            CommFuns.WriteLog("[LineNotify] Send Message Post：https://notify-api.line.me/api/notify");
             using (HttpClient client = new HttpClient())
             {
                 var valuePairs = new Dictionary<string, string>();
@@ -55,6 +57,25 @@ namespace OAuthHW.Common
             return JsonConvert.DeserializeObject<LineNotifyResult>(sResult);
         }
 
-
+        /// <summary>
+        /// 取消LineNotify連動 
+        /// </summary>
+        /// <param name="target_access_token"></param>
+        /// <returns>
+        /// status = 200 he request is accepted, revoking all access tokens and ending the process
+        /// status = 401 the access tokens have already been revoked 
+        /// </returns>
+        public static async Task<LineNotifyResult> LineNotifyRevoke(string target_access_token)
+        {
+            string sResult = "";
+            CommFuns.WriteLog("[LineNotify] Revoke Post：https://notify-api.line.me/api/revoke");
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", target_access_token);
+                var response = await client.PostAsync("https://notify-api.line.me/api/revoke",null);
+                sResult = response.Content.ReadAsStringAsync().Result;
+            }
+            return JsonConvert.DeserializeObject<LineNotifyResult>(sResult);
+        }
     }
 }

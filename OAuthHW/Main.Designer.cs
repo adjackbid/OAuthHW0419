@@ -34,6 +34,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblNotifyStatus = new System.Windows.Forms.Label();
             this.btnCheckNotify = new System.Windows.Forms.Button();
+            this.btnRevokeNotify = new System.Windows.Forms.Button();
             this.btnNotifyApply = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -86,6 +87,7 @@
             this.groupBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.groupBox1.Controls.Add(this.lblNotifyStatus);
             this.groupBox1.Controls.Add(this.btnCheckNotify);
+            this.groupBox1.Controls.Add(this.btnRevokeNotify);
             this.groupBox1.Controls.Add(this.btnNotifyApply);
             this.groupBox1.Controls.Add(this.lblName);
             this.groupBox1.Location = new System.Drawing.Point(394, 12);
@@ -117,6 +119,19 @@
             this.btnCheckNotify.Text = "檢查Notify狀態";
             this.btnCheckNotify.UseVisualStyleBackColor = false;
             this.btnCheckNotify.Click += new System.EventHandler(this.btnCheckNotify_Click);
+            // 
+            // btnRevokeNotify
+            // 
+            this.btnRevokeNotify.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.btnRevokeNotify.Enabled = false;
+            this.btnRevokeNotify.Font = new System.Drawing.Font("Microsoft JhengHei UI", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRevokeNotify.Location = new System.Drawing.Point(24, 325);
+            this.btnRevokeNotify.Name = "btnRevokeNotify";
+            this.btnRevokeNotify.Size = new System.Drawing.Size(225, 53);
+            this.btnRevokeNotify.TabIndex = 0;
+            this.btnRevokeNotify.Text = "取消Notify連動";
+            this.btnRevokeNotify.UseVisualStyleBackColor = false;
+            this.btnRevokeNotify.Click += new System.EventHandler(this.btnRevokeNotify_Click);
             // 
             // btnNotifyApply
             // 
@@ -211,7 +226,7 @@
             // 
             this.rlogBox.Location = new System.Drawing.Point(1135, 12);
             this.rlogBox.Name = "rlogBox";
-            this.rlogBox.Size = new System.Drawing.Size(450, 705);
+            this.rlogBox.Size = new System.Drawing.Size(572, 705);
             this.rlogBox.TabIndex = 3;
             this.rlogBox.Text = "";
             // 
@@ -219,7 +234,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1597, 740);
+            this.ClientSize = new System.Drawing.Size(1730, 740);
             this.Controls.Add(this.rlogBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -253,5 +268,6 @@
         public Button btnSendNotify;
         public Button btnGetTargetList;
         private Label label1;
+        private Button btnRevokeNotify;
     }
 }

@@ -91,17 +91,20 @@ namespace OAuthHW
                     {
                         lblNotifyStatus.Text = "LineNotify狀態：" + "OK";
                         btnNotifyApply.Enabled = false;
+                        btnRevokeNotify.Enabled = true;
                     }
                     else
                     {
-                        CommFuns.WriteLog($"[LineNotify] Access Token無效，請使用者進行Nofity申請");
+                        CommFuns.WriteLog($"[LineNotify] Access Token無效，請使用者進行Nofity連動");
                         btnNotifyApply.Enabled = true;
+                        btnRevokeNotify.Enabled = false;
                     }
                 }
                 else
                 {
-                    CommFuns.WriteLog($"[LineNotify] 認證結果:無資料，請使用者進行Nofity申請");
+                    CommFuns.WriteLog($"[LineNotify] 認證結果:無資料，請使用者進行Nofity連動");
                     btnNotifyApply.Enabled = true;
+                    btnRevokeNotify.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -116,7 +119,14 @@ namespace OAuthHW
             if (token.status == 200)
             {
                 lblNotifyStatus.Text = "LineNotify狀態：" + "OK";
-                CommFuns.WriteLog($"[LineNotify] Token:{token.access_token.Substring(0,5)}...");
+                CommFuns.WriteLog($"[LineNotify] 連動成功 Token:{token.access_token.Substring(0,5)}...");
+                btnRevokeNotify.Enabled = true;
+            }
+            else
+            {
+                lblNotifyStatus.Text = "LineNotify狀態：" + "待連動";
+                CommFuns.WriteLog($"[LineNotify] 連動失敗:{token?.status} {token?.message}");
+                btnRevokeNotify.Enabled = false;
             }
 
             //更新資料庫(access token)
@@ -127,6 +137,7 @@ namespace OAuthHW
                 name = _profile.name
             };
             CommFuns.UpdateOrInsertUserInfo(user);
+
         }
 
         private void btnNotifyApply_Click(object sender, EventArgs e)
@@ -142,6 +153,42 @@ namespace OAuthHW
                 popDialog = new PopDialog(host);
                 popDialog.StartPosition = FormStartPosition.CenterParent;
                 popDialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        private async void btnRevokeNotify_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var userInfo = CommFuns.GetUserInfoFromDB(_profile.sub);
+                if (userInfo == null || userInfo.access_token == "")
+                {
+                    throw new Exception("使用者沒有綁定Notify連動紀錄");
+                }
+
+                CommFuns.WriteLog($"[LineNotify] Revoke Start");
+                var result = await CommFuns.LineNotifyRevoke(userInfo.access_token);
+                CommFuns.WriteLog($"[LineNotify] Revoke結果:{result.status}");
+                if (result.status == 200)
+                {
+                    lblNotifyStatus.Text = "LineNotify狀態：" + "已取消";
+                    btnNotifyApply.Enabled = true;
+                    btnRevokeNotify.Enabled = false;
+                    //更新使用者access_token
+                    userInfo.access_token = "";//清空
+                    CommFuns.UpdateOrInsertUserInfo(userInfo);
+                }
+                else
+                {
+                    CommFuns.WriteLog($"[LineNotify] Revoke失敗：{result.message}");
+                    btnNotifyApply.Enabled = false;
+                    btnRevokeNotify.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
