@@ -254,5 +254,11 @@ namespace OAuthHW
             }
         }
 
+        //Make log go to buttom
+        private void rlogBox_TextChanged(object sender, EventArgs e)
+        {
+            rlogBox.SelectionStart= rlogBox.Text.Length;
+            rlogBox.ScrollToCaret();
+        }
     }
 }

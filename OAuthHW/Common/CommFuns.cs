@@ -59,6 +59,7 @@ namespace OAuthHW.Common
                     {
                         Program.MainForm.btnCheckNotify.Enabled = true;
                     }
+                    formGoOnTop();
                 }));
             }
             catch (Exception ex)
@@ -79,12 +80,19 @@ namespace OAuthHW.Common
                 {
                     Program.MainForm.popDialog?.Close();
                     Program.MainForm.ShowLineNotifyResult(token);
+                    formGoOnTop();
                 }));
             }
             catch (Exception ex)
             {
                 WriteLog("error=" + ex.Message);
             }
+        }
+
+        private static void formGoOnTop()
+        {
+            Program.MainForm.BringToFront();
+            Program.MainForm.Activate();
         }
     }
 }

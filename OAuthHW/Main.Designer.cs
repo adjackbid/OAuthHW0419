@@ -229,6 +229,7 @@
             this.rlogBox.Size = new System.Drawing.Size(572, 705);
             this.rlogBox.TabIndex = 3;
             this.rlogBox.Text = "";
+            this.rlogBox.TextChanged += new System.EventHandler(this.rlogBox_TextChanged);
             // 
             // Main
             // 
