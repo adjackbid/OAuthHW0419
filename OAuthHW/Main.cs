@@ -39,6 +39,8 @@ namespace OAuthHW
                 CommFuns.WriteLog($"[LineLogin] Service Up {sUrl}");
                 
                 //開啟Browser
+                //亂數取得state
+                CommFuns.Line_State = Guid.NewGuid().ToString();
                 Process.Start(new ProcessStartInfo(CommFuns.LineLogin_GetCodeUrl) { UseShellExecute = true });
                 CommFuns.WriteLog($"[LineLogin] Get Code Start");
                 //跳出一個視窗擋住
@@ -146,6 +148,8 @@ namespace OAuthHW
             {
                 CommFuns.WriteLog($"[LineNotify] 取得LineNotify認證Code");
                 //開啟Browser
+                //亂數取得state
+                CommFuns.Line_State = Guid.NewGuid().ToString();
                 Process.Start(new ProcessStartInfo(CommFuns.LineNotify_GetCodeUrl) { UseShellExecute = true });
                 CommFuns.WriteLog($"[LineNotify] Get Code Start");
                 //跳視窗擋住

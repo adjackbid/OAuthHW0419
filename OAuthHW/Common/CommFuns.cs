@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,13 +21,20 @@ namespace OAuthHW.Common
         public static string baseUrl = "http://localhost:6789";
         public static string LineLogin_RedirectUrl = $"{baseUrl}/Line/Login";
         public static string LineLogin_ClientID = "1660895388";
-        public static string LineLogin_GetCodeUrl = $"https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id={LineLogin_ClientID}&state=123123&scope=openid profile&redirect_uri={LineLogin_RedirectUrl}";
         public static string LineLogin_Client_secret = "0271df881c4a3c78b1502431b921213d";
-
         public static string LineNotify_RedirectUrl = $"{baseUrl}/Line/Notify";
         public static string LineNotify_ClientID = "aNMfm0WvCiG7VWWleFhgje";
         public static string LineNotify_Client_secret = "o9L2R7PrQFq9uSJJIfBzwUIgdhVrN4MMUwGZHqz1rRr";
-        public static string LineNotify_GetCodeUrl = $"https://notify-bot.line.me/oauth/authorize?response_type=code&client_id={LineNotify_ClientID}&redirect_uri={LineNotify_RedirectUrl}&scope=notify&state=12345";
+        public static string Line_State = "";
+        public static string LineNotify_GetCodeUrl
+        {
+            get { return $"https://notify-bot.line.me/oauth/authorize?response_type=code&client_id={LineNotify_ClientID}&redirect_uri={LineNotify_RedirectUrl}&scope=notify&state={Line_State}"; }
+        }
+        public static string LineLogin_GetCodeUrl
+        {
+            get { return $"https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id={LineLogin_ClientID}&state={Line_State}&scope=openid profile&redirect_uri={LineLogin_RedirectUrl}"; ; }
+        }
+
         #endregion
 
         /// <summary>

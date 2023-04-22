@@ -20,9 +20,20 @@ namespace OAuthHW.Web.Controllers
     {
         public async Task<IActionResult> Login(string code, string state)
         {
-            //TODO: Check State是否一致
             //取得code , state
             CommFuns.WriteLog("[LineLogin] 收到Login Call Back - code、state");
+
+            //Check State是否一致
+            if (state != CommFuns.Line_State)
+            {
+                CommFuns.WriteLog("[LineLogin] state不一致");
+                return BadRequest();
+            }
+            else
+            {
+                CommFuns.WriteLog("[LineLogin] state結果一致");
+            }
+
             #region Line OpenID Login & Verify
             //向認證server換access token / open id
             CommFuns.WriteLog("[LineLogin] Get Token by Code Post：https://api.line.me/oauth2/v2.1/token");
@@ -68,6 +79,18 @@ namespace OAuthHW.Web.Controllers
         public async Task<IActionResult> Notify(string code, string state)
         {
             CommFuns.WriteLog("[LineNotify] 收到Notify Call Back - code、state");
+
+            //Check State是否一致
+            if (state != CommFuns.Line_State)
+            {
+                CommFuns.WriteLog("[LineNotify] state不一致");
+                return BadRequest();
+            }
+            else
+            {
+                CommFuns.WriteLog("[LineNotify] state結果一致");
+            }
+
             //如果db上這個user 沒有notfiy的access token的話，就要提示user要去同意加入
             //如果已有的話，去檢查access token有效性，如果無效的話，提示user重新同意加入或是refresh
             //向認證server換access token / open id
